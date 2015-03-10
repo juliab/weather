@@ -9,11 +9,13 @@ public class CsvFileReader {
     public List<CityWeather> readCsvFile(String fileName) {
 
         List<CityWeather> citiesList = new ArrayList<>();
+        InputStream inputStream = null;
+        BufferedReader bufferedReader = null;
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream(fileName);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            inputStream = getClass().getClassLoader().getResourceAsStream(fileName);
+            bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withHeader()
-                    .parse(br);
+                    .parse(bufferedReader);
             for (CSVRecord record : records) {
                 citiesList.add(new CityWeather(record.get(0), record.get(1)));
             }
@@ -23,6 +25,17 @@ public class CsvFileReader {
         } catch (Exception e) {
             System.out.println("Error in CsvFileReader");
             e.printStackTrace();
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return citiesList;
     }
