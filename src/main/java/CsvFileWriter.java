@@ -1,55 +1,47 @@
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.BufferedWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CsvFileWriter {
     private static final String NEW_LINE_SEPARATOR = "\n";
-    private static final Object[] FILE_HEADER = { "City Name", "Subdivision", "Temp, C", "Cloud cover, %",
+    private static final Object[] FILE_HEADER = { "City Name", "Area", "Temp, C", "Cloud cover, %",
             "Humidity, %", "Pressure, millibars" };
 
-    public static void writeCsvFile(List<CityWeather> cities, String fileName) {
+    public static void writeCsvFile(List<City> cities, String filePath) {
 
-        FileWriter fileWriter = null;
-        CSVPrinter csvFilePrinter = null;
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
+        Path path = Paths.get(filePath);
 
-        try {
-            fileWriter = new FileWriter(fileName);
-            csvFilePrinter = new CSVPrinter(fileWriter, csvFileFormat);
+        try (BufferedWriter writer = Files.newBufferedWriter(path);
+             CSVPrinter csvFilePrinter = new CSVPrinter(writer, csvFileFormat)) {
+
             csvFilePrinter.printRecord(FILE_HEADER);
 
-            for (CityWeather cityWeather : cities) {
+            for (City city: cities) {
                 List<String> weatherDataRecord = new ArrayList<>();
-                weatherDataRecord.add(cityWeather.getCityName());
-                weatherDataRecord.add(cityWeather.getDistrict());
-                weatherDataRecord.add(cityWeather.getTempC());
-                weatherDataRecord.add(cityWeather.getCloudCover());
-                weatherDataRecord.add(cityWeather.getHumidity());
-                weatherDataRecord.add(cityWeather.getPressure());
+                weatherDataRecord.add(city.getName());
+                weatherDataRecord.add(city.getArea());
+                Weather weather = city.getWeather();
+                if (weather != null) {
+                    weatherDataRecord.add(weather.getTempC());
+                    weatherDataRecord.add(weather.getCloudCover());
+                    weatherDataRecord.add(weather.getHumidity());
+                    weatherDataRecord.add(weather.getPressure());
+                }
                 csvFilePrinter.printRecord(weatherDataRecord);
             }
 
-            System.out.println("CSV file " + fileName + " was created successfully");
+            System.out.println("CSV file " + filePath + " was created successfully");
 
         } catch (Exception e) {
             System.out.println("Error in CsvFileWriter");
             e.printStackTrace();
-        } finally {
-            try {
-                if (fileWriter != null) {
-                    fileWriter.close();
-                }
-                if (csvFilePrinter != null) {
-                    csvFilePrinter.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Error while flushing/closing fileWriter/csvPrinter");
-                e.printStackTrace();
-            }
         }
     }
 }

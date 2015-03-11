@@ -34,10 +34,10 @@ public class WeatherService {
                 .setParameter("tp", "24"); // time interval in hours; 24 hourly is day average
     }
 
-    public void requestWeather(CityWeather city) {
+    public void requestWeather(City city) {
         try {
             // Send request
-            URI uri = uriBuilder.setParameter("q", city.getCityName() + ",ua")
+            URI uri = uriBuilder.setParameter("q", city.getName() + ",ua")
                     .build();
             HttpGet getRequest = new HttpGet(uri);
             for (int i = 0; i < 3; i++) { // 3 tries to send request because occasionally service responds with 503 error
@@ -49,7 +49,7 @@ public class WeatherService {
             }
             if (response.getStatusLine().getStatusCode() != 200) {
                 System.out.println(response.getStatusLine().getStatusCode() +
-                        " error requesting weather data for " + city.getCityName());
+                        " error requesting weather data for " + city.getName());
                 return;
             }
 
@@ -63,13 +63,10 @@ public class WeatherService {
                         .getJSONObject(0);
 
             // Set weather data to city instance
-            city.setTempC(weatherData.getString("tempC"));
-            city.setCloudCover(weatherData.getString("cloudcover"));
-            city.setHumidity(weatherData.getString("humidity"));
-            city.setPressure(weatherData.getString("pressure"));
-
+            city.setWeather(new Weather(weatherData.getString("tempC"), weatherData.getString("cloudcover"),
+                    weatherData.getString("humidity"), weatherData.getString("pressure")));
         } catch (JSONException e) {
-            System.out.println("Weather data not found for '" + city.getCityName() + "' city");
+            System.out.println("Weather data not found for '" + city.getName() + "' city");
         } catch (URISyntaxException | IOException | InterruptedException e) {
             e.printStackTrace();
         }
