@@ -1,9 +1,8 @@
 package data;
 
-public class City {
-    private String name;
-    private String area;
-    private Weather weather;
+final public class City {
+    final private String name;
+    final private String area;
 
     public City(String name, String area) {
         this.name = name;
@@ -16,13 +15,5 @@ public class City {
 
     public String getArea() {
         return area;
-    }
-
-    public Weather getWeather() {
-        return weather;
-    }
-
-    public void setWeather(Weather weather) {
-        this.weather = weather;
     }
 }

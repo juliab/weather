@@ -10,14 +10,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class CsvFileWriter {
     private static final String NEW_LINE_SEPARATOR = "\n";
     private static final Object[] FILE_HEADER = { "City Name", "Area", "Temp, C", "Cloud cover, %",
             "Humidity, %", "Pressure, millibars" };
 
-    public static void writeCsvFile(List<City> cities, String filePath) {
+    public static void writeCsvFile(Map<City, Weather> weatherMap, String filePath) {
 
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
         Path path = Paths.get(filePath);
@@ -27,11 +29,13 @@ public class CsvFileWriter {
 
             csvFilePrinter.printRecord(FILE_HEADER);
 
-            for (City city: cities) {
+            Iterator it = weatherMap.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry)it.next();
                 List<String> weatherDataRecord = new ArrayList<>();
-                weatherDataRecord.add(city.getName());
-                weatherDataRecord.add(city.getArea());
-                Weather weather = city.getWeather();
+                weatherDataRecord.add(((City) pair.getKey()).getName());
+                weatherDataRecord.add(((City) pair.getKey()).getArea());
+                Weather weather = (Weather) pair.getValue();
                 if (weather != null) {
                     weatherDataRecord.add(weather.getTempC());
                     weatherDataRecord.add(weather.getCloudCover());
@@ -39,6 +43,9 @@ public class CsvFileWriter {
                     weatherDataRecord.add(weather.getPressure());
                 }
                 csvFilePrinter.printRecord(weatherDataRecord);
+
+                System.out.println(pair.getKey() + " = " + pair.getValue());
+                it.remove();
             }
 
             System.out.println("CSV file " + filePath + " was created successfully");

@@ -1,10 +1,10 @@
 package data;
 
-public class Weather {
-    private String tempC;
-    private String cloudCover;
-    private String humidity;
-    private String pressure;
+final public class Weather {
+    final private String tempC;
+    final private String cloudCover;
+    final private String humidity;
+    final private String pressure;
 
     public Weather(String tempC, String cloudCover, String humidity, String pressure) {
         this.tempC = tempC;

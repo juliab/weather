@@ -10,7 +10,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -38,8 +37,7 @@ public class WeatherService {
                 .setParameter("tp", "24"); // time interval in hours; 24 hourly is day average
     }
 
-    public void requestWeather(City city) {
-        try {
+    public Weather requestWeather(City city) throws URISyntaxException, IOException, InterruptedException {
             // Send request
             URI uri = uriBuilder.setParameter("q", city.getName() + ",ua")
                     .build();
@@ -54,7 +52,7 @@ public class WeatherService {
             if (response.getStatusLine().getStatusCode() != 200) {
                 System.out.println(response.getStatusLine().getStatusCode() +
                         " error requesting weather data for " + city.getName());
-                return;
+                return null;
             }
 
             // Get weather data from response
@@ -67,13 +65,8 @@ public class WeatherService {
                         .getJSONObject(0);
 
             // Set weather data to city instance
-            city.setWeather(new Weather(weatherData.getString("tempC"), weatherData.getString("cloudcover"),
-                    weatherData.getString("humidity"), weatherData.getString("pressure")));
-        } catch (JSONException e) {
-            System.out.println("data.Weather data not found for '" + city.getName() + "' city");
-        } catch (URISyntaxException | IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+            return new Weather(weatherData.getString("tempC"), weatherData.getString("cloudcover"),
+                    weatherData.getString("humidity"), weatherData.getString("pressure"));
     }
 
     public void closeSession() {
