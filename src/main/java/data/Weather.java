@@ -1,3 +1,5 @@
+package data;
+
 public class Weather {
     private String tempC;
     private String cloudCover;

@@ -1,3 +1,7 @@
+package service;
+
+import data.City;
+import data.Weather;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -26,7 +30,7 @@ public class WeatherService {
                 .setDefaultRequestConfig(globalConfig)
                 .build();
         uriBuilder = new URIBuilder().setScheme("http")
-                .setHost("api.worldweatheronline.com")
+                .setHost("api2.worldweatheronline.com")
                 .setPath("/free/v2/past-weather.ashx")
                 .setParameter("key", "b868de27c36d1354e818a8447a21a")
                 .setParameter("format", "json")
@@ -66,7 +70,7 @@ public class WeatherService {
             city.setWeather(new Weather(weatherData.getString("tempC"), weatherData.getString("cloudcover"),
                     weatherData.getString("humidity"), weatherData.getString("pressure")));
         } catch (JSONException e) {
-            System.out.println("Weather data not found for '" + city.getName() + "' city");
+            System.out.println("data.Weather data not found for '" + city.getName() + "' city");
         } catch (URISyntaxException | IOException | InterruptedException e) {
             e.printStackTrace();
         }

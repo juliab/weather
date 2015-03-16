@@ -1,3 +1,7 @@
+package io;
+
+import data.City;
+import data.Weather;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
