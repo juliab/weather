@@ -9,8 +9,6 @@ import org.springframework.web.client.RestTemplate;
 
 final public class WeatherService {
 
-    RestTemplate restTemplate = new RestTemplate();
-
     /**
      * Makes a call to wunderground rest service, extracts weather information from incoming json response
      *
@@ -21,6 +19,7 @@ final public class WeatherService {
      * @throws  WeatherInfoNotFoundException If weather information for required city and date wasn't found
      */
     public Weather requestWeather(City city, String date) throws CityNotFoundException, WeatherInfoNotFoundException {
+        RestTemplate restTemplate = new RestTemplate();
         String serviceUrl = "http://api.wunderground.com/api/2dcffe6577cd71f9/history_{date}/q/ua/{city}.json";
 
         ObjectNode objectNode = restTemplate.getForObject(serviceUrl, ObjectNode.class, date, city.getName());
