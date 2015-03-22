@@ -1,80 +1,42 @@
 package service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import data.City;
 import data.Weather;
-import org.apache.http.client.config.CookieSpecs;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import org.springframework.web.client.RestTemplate;
 
-public class WeatherService {
-    CloseableHttpClient httpClient;
-    CloseableHttpResponse response;
-    URIBuilder uriBuilder;
+final public class WeatherService {
 
-    public WeatherService(String date) {
-        RequestConfig globalConfig = RequestConfig.custom()
-                .setCookieSpec(CookieSpecs.IGNORE_COOKIES)
-                .build();
-        httpClient = HttpClients.custom()
-                .setDefaultRequestConfig(globalConfig)
-                .build();
-        uriBuilder = new URIBuilder().setScheme("http")
-                .setHost("api2.worldweatheronline.com")
-                .setPath("/free/v2/past-weather.ashx")
-                .setParameter("key", "b868de27c36d1354e818a8447a21a")
-                .setParameter("format", "json")
-                .setParameter("date", date)
-                .setParameter("tp", "24"); // time interval in hours; 24 hourly is day average
-    }
+    RestTemplate restTemplate = new RestTemplate();
 
-    public Weather requestWeather(City city) throws URISyntaxException, IOException, InterruptedException {
-            // Send request
-            URI uri = uriBuilder.setParameter("q", city.getName() + ",ua")
-                    .build();
-            HttpGet getRequest = new HttpGet(uri);
-            for (int i = 0; i < 3; i++) { // 3 tries to send request because occasionally service responds with 503 error
-                response = httpClient.execute(getRequest);
-                Thread.sleep(200); // service allows max 5 requests per second
-                if (response.getStatusLine().getStatusCode() == 200) {
-                    break;
-                }
-            }
-            if (response.getStatusLine().getStatusCode() != 200) {
-                System.out.println(response.getStatusLine().getStatusCode() +
-                        " error requesting weather data for " + city.getName());
-                return null;
-            }
+    /**
+     * Makes a call to wunderground rest service, extracts weather information from incoming json response
+     *
+     * @param   city City name to request weather information for
+     * @param   date Date to request weather information for
+     * @return  Weather instance
+     * @throws  CityNotFoundException If no city found by search query
+     * @throws  WeatherInfoNotFoundException If weather information for required city and date wasn't found
+     */
+    public Weather requestWeather(City city, String date) throws CityNotFoundException, WeatherInfoNotFoundException {
+        String serviceUrl = "http://api.wunderground.com/api/2dcffe6577cd71f9/history_{date}/q/ua/{city}.json";
 
-            // Get weather data from response
-            String responseString = EntityUtils.toString(response.getEntity());
-            JSONObject weatherData = new JSONObject(responseString)
-                        .getJSONObject("data")
-                        .getJSONArray("weather")
-                        .getJSONObject(0)
-                        .getJSONArray("hourly")
-                        .getJSONObject(0);
-
-            // Set weather data to city instance
-            return new Weather(weatherData.getString("tempC"), weatherData.getString("cloudcover"),
-                    weatherData.getString("humidity"), weatherData.getString("pressure"));
-    }
-
-    public void closeSession() {
-        try {
-            httpClient.close();
-            response.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        ObjectNode objectNode = restTemplate.getForObject(serviceUrl, ObjectNode.class, date, city.getName());
+        if (objectNode.get("history") == null) {
+            throw new CityNotFoundException(city.getName());
         }
+
+        JsonNode dailySummary = objectNode.get("history").get("dailysummary").get(0);
+        if (dailySummary == null) {
+            throw new WeatherInfoNotFoundException(city.getName());
+        }
+
+        String temperatureC = dailySummary.get("meantempm").asText();
+        String humidity = dailySummary.get("humidity").asText();
+        String windSpeed = dailySummary.get("meanwindspdm").asText();
+        String pressure = dailySummary.get("meanpressurem").asText();
+        return new Weather(temperatureC, humidity, windSpeed, pressure);
     }
 }

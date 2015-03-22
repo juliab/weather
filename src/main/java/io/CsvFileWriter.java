@@ -16,8 +16,8 @@ import java.util.Map;
 
 public class CsvFileWriter {
     private static final String NEW_LINE_SEPARATOR = "\n";
-    private static final Object[] FILE_HEADER = { "City Name", "Area", "Temp, C", "Cloud cover, %",
-            "Humidity, %", "Pressure, millibars" };
+    private static final Object[] FILE_HEADER = { "city_name", "area", "temperature_C", "humidity",
+            "windspeed", "pressure" };
 
     public static void writeCsvFile(Map<City, Weather> weatherMap, String filePath) {
 
@@ -37,14 +37,12 @@ public class CsvFileWriter {
                 weatherDataRecord.add(((City) pair.getKey()).getArea());
                 Weather weather = (Weather) pair.getValue();
                 if (weather != null) {
-                    weatherDataRecord.add(weather.getTempC());
-                    weatherDataRecord.add(weather.getCloudCover());
+                    weatherDataRecord.add(weather.getTemperatureC());
                     weatherDataRecord.add(weather.getHumidity());
+                    weatherDataRecord.add(weather.getWindSpeed());
                     weatherDataRecord.add(weather.getPressure());
                 }
                 csvFilePrinter.printRecord(weatherDataRecord);
-
-                System.out.println(pair.getKey() + " = " + pair.getValue());
                 it.remove();
             }
 

@@ -1,28 +1,30 @@
 package data;
 
 final public class Weather {
-    final private String tempC;
-    final private String cloudCover;
-    final private String humidity;
-    final private String pressure;
 
-    public Weather(String tempC, String cloudCover, String humidity, String pressure) {
-        this.tempC = tempC;
-        this.cloudCover = cloudCover;
+    final private String temperatureC; // Average day temperature in C
+    final private String humidity; // Average day humidity, %
+    final private String windSpeed; // Average day windSpeed kph
+    final private String pressure; // Average day pressure in mBar
+
+    public Weather(String temperatureC, String humidity, String windSpeed,
+                   String pressure) {
+        this.temperatureC = temperatureC;
         this.humidity = humidity;
+        this.windSpeed = windSpeed;
         this.pressure = pressure;
     }
 
-    public String getTempC() {
-        return tempC;
-    }
-
-    public String getCloudCover() {
-        return cloudCover;
+    public String getTemperatureC() {
+        return temperatureC;
     }
 
     public String getHumidity() {
         return humidity;
+    }
+
+    public String getWindSpeed() {
+        return windSpeed;
     }
 
     public String getPressure() {

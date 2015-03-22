@@ -49,7 +49,7 @@ public class OptionsParser {
     }
 
     public String getDate() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
         dateFormat.setLenient(false);
         String argDate = cmd.getOptionValue(date.getOpt());
         if (argDate != null) {

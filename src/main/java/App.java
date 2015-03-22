@@ -2,6 +2,8 @@ import data.City;
 import data.Weather;
 import io.CsvFileReader;
 import io.CsvFileWriter;
+import service.CityNotFoundException;
+import service.WeatherInfoNotFoundException;
 import service.WeatherService;
 
 import java.io.IOException;
@@ -16,13 +18,16 @@ public class App {
         OptionsParser parser = new OptionsParser(args);
         String date = parser.getDate();
         System.out.println("Acquiring weather data on " + date + ". This may take a while...");
-        WeatherService service = new WeatherService(date);
+        WeatherService service = new WeatherService();
         List<City> cities = new CsvFileReader().readCsvFile(parser.getInputFilePath());
         Map<City, Weather> weatherMap = new HashMap<>();
         for (City city : cities) {
-            weatherMap.put(city, service.requestWeather(city));
+            try {
+                weatherMap.put(city, service.requestWeather(city, date));
+            } catch (CityNotFoundException | WeatherInfoNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
         }
-        service.closeSession();
         CsvFileWriter.writeCsvFile(weatherMap, parser.getOutputFilePath());
     }
 }
