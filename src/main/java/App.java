@@ -3,7 +3,6 @@ import data.Weather;
 import io.CsvFileReader;
 import io.CsvFileWriter;
 import service.CityNotFoundException;
-import service.WeatherInfoNotFoundException;
 import service.WeatherService;
 
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class App {
         for (City city : cities) {
             try {
                 weatherMap.put(city, service.requestWeather(city, date));
-            } catch (CityNotFoundException | WeatherInfoNotFoundException e) {
+            } catch (CityNotFoundException e) {
                 System.out.println(e.getMessage());
             }
         }

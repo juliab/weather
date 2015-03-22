@@ -10,32 +10,29 @@ import org.springframework.web.client.RestTemplate;
 final public class WeatherService {
 
     /**
-     * Makes a call to wunderground rest service, extracts weather information from incoming json response
+     * Makes a call to worldweatheronline rest service, extracts weather information from incoming json response
      *
      * @param   city City name to request weather information for
      * @param   date Date to request weather information for
      * @return  Weather instance
      * @throws  CityNotFoundException If no city found by search query
-     * @throws  WeatherInfoNotFoundException If weather information for required city and date wasn't found
      */
-    public Weather requestWeather(City city, String date) throws CityNotFoundException, WeatherInfoNotFoundException {
+    public Weather requestWeather(City city, String date) throws CityNotFoundException {
         RestTemplate restTemplate = new RestTemplate();
-        String serviceUrl = "http://api.wunderground.com/api/2dcffe6577cd71f9/history_{date}/q/ua/{city}.json";
-
-        ObjectNode objectNode = restTemplate.getForObject(serviceUrl, ObjectNode.class, date, city.getName());
-        if (objectNode.get("history") == null) {
+        String serviceUrl = "http://api.worldweatheronline.com/free/v2/past-weather.ashx?" +
+                "key={key}&q={city},ua&format=json&date={date}";
+        String key = "b868de27c36d1354e818a8447a21a";
+        ObjectNode objectNode = restTemplate.getForObject(serviceUrl, ObjectNode.class, key, city.getName(), date);
+        if (objectNode.get("data").get("error") != null) {
             throw new CityNotFoundException(city.getName());
         }
 
-        JsonNode dailySummary = objectNode.get("history").get("dailysummary").get(0);
-        if (dailySummary == null) {
-            throw new WeatherInfoNotFoundException(city.getName());
-        }
+        JsonNode dailySummary = objectNode.get("data").get("weather").get(0).get("hourly").get(0);
 
-        String temperatureC = dailySummary.get("meantempm").asText();
+        String temperatureC = dailySummary.get("tempC").asText();
         String humidity = dailySummary.get("humidity").asText();
-        String windSpeed = dailySummary.get("meanwindspdm").asText();
-        String pressure = dailySummary.get("meanpressurem").asText();
+        String windSpeed = dailySummary.get("windspeedKmph").asText();
+        String pressure = dailySummary.get("pressure").asText();
         return new Weather(temperatureC, humidity, windSpeed, pressure);
     }
 }
