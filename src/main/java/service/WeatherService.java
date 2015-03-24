@@ -1,5 +1,6 @@
 package service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import data.City;
 import data.Weather;
@@ -27,10 +28,18 @@ final public class WeatherService {
             throw new CityNotFoundException(city.getName());
         }
 
-        String temperatureC = objectNode.findValue("tempC").asText();
-        String humidity = objectNode.findValue("humidity").asText();
-        String windSpeed = objectNode.findValue("windspeedKmph").asText();
-        String pressure = objectNode.findValue("pressure").asText();
+        JsonNode temperatureCJson = objectNode.findValue("tempC");
+        String temperatureC = temperatureCJson != null ? temperatureCJson.asText() : null;
+
+        JsonNode humidityJson = objectNode.findValue("humidity");
+        String humidity = humidityJson != null ? humidityJson.asText() : null;
+
+        JsonNode windSpeedJson = objectNode.findValue("windspeedKmph");
+        String windSpeed = windSpeedJson != null ? windSpeedJson.asText() : null;
+
+        JsonNode pressureJson = objectNode.findValue("pressure");
+        String pressure = pressureJson != null ? pressureJson.asText() : null;
+
         return new Weather(temperatureC, humidity, windSpeed, pressure);
     }
 }
