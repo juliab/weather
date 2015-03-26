@@ -8,7 +8,6 @@ import org.apache.commons.csv.CSVPrinter;
 import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,12 +18,11 @@ public class CsvFileWriter {
     private static final Object[] FILE_HEADER = { "city_name", "area", "temperature_C", "humidity",
             "windspeed", "pressure" };
 
-    public static void writeCsvFile(Map<City, Weather> weatherMap, String filePath) {
+    public static void writeCsvFile(Map<City, Weather> weatherMap, Path filePath) {
 
         CSVFormat csvFileFormat = CSVFormat.DEFAULT.withRecordSeparator(NEW_LINE_SEPARATOR);
-        Path path = Paths.get(filePath);
 
-        try (BufferedWriter writer = Files.newBufferedWriter(path);
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath);
              CSVPrinter csvFilePrinter = new CSVPrinter(writer, csvFileFormat)) {
 
             csvFilePrinter.printRecord(FILE_HEADER);

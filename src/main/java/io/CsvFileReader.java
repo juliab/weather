@@ -7,16 +7,14 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CsvFileReader {
-    public List<City> readCsvFile(String filePath) {
+    public List<City> readCsvFile(Path filePath) {
 
         List<City> cities = new ArrayList<>();
-        Path path = Paths.get(filePath);
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
+        try (BufferedReader reader = Files.newBufferedReader(filePath)) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT.withHeader()
                     .parse(reader);
             for (CSVRecord record : records) {

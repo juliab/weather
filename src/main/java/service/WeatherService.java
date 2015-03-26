@@ -7,6 +7,9 @@ import data.Weather;
 
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 final public class WeatherService {
 
     /**
@@ -17,13 +20,17 @@ final public class WeatherService {
      * @return  Weather instance
      * @throws  CityNotFoundException If no city found by search query
      */
-    public Weather requestWeather(City city, String date) throws CityNotFoundException {
+    public Weather requestWeather(City city, Date date) throws CityNotFoundException {
         RestTemplate restTemplate = new RestTemplate();
         String serviceUrl = "http://api.worldweatheronline.com/free/v2/past-weather.ashx?" +
                 "key={key}&q={city},ua&format=json&date={date}";
+
         String key = "b868de27c36d1354e818a8447a21a";
 
-        ObjectNode objectNode = restTemplate.getForObject(serviceUrl, ObjectNode.class, key, city.getName(), date);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        ObjectNode objectNode = restTemplate.getForObject(serviceUrl, ObjectNode.class,
+                key, city.getName(), dateFormat.format(date));
         if (objectNode.findValue("error") != null) {
             throw new CityNotFoundException(city.getName());
         }
