@@ -1,7 +1,6 @@
 import data.City;
 import data.Weather;
-import io.CsvFileReader;
-import io.CsvFileWriter;
+import io.WeatherData;
 import org.apache.commons.cli.ParseException;
 import service.CityNotFoundException;
 import service.WeatherService;
@@ -21,7 +20,7 @@ public class App {
             Date date = parsedArgs.getDate();
             System.out.println("Acquiring weather data on " + date + ". This may take a while...");
             WeatherService service = new WeatherService();
-            List<City> cities = new CsvFileReader().readCsvFile(parsedArgs.getInputFilePath());
+            List<City> cities = WeatherData.readLocations(parsedArgs.getInputFilePath());
             Map<City, Weather> weatherMap = new HashMap<>();
             for (City city : cities) {
                 try {
@@ -30,7 +29,8 @@ public class App {
                     System.out.println(e.getMessage());
                 }
             }
-            CsvFileWriter.writeCsvFile(weatherMap, parsedArgs.getOutputFilePath());
+            WeatherData.write(weatherMap, parsedArgs.getOutputFilePath());
+            System.out.println("CSV file " + parsedArgs.getOutputFilePath() + " was created successfully");
         } catch (ParseException | java.text.ParseException e) {
             Args.printHelp();
             System.exit(-1);
