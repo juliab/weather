@@ -7,6 +7,7 @@ import data.Weather;
 
 import org.springframework.web.client.RestTemplate;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,7 +28,7 @@ final public class WeatherService {
 
         String key = "b868de27c36d1354e818a8447a21a";
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Format dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
         ObjectNode objectNode = restTemplate.getForObject(serviceUrl, ObjectNode.class,
                 key, city.getName(), dateFormat.format(date));

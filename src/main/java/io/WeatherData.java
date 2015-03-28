@@ -1,18 +1,20 @@
 package io;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.core.FormatSchema;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import data.City;
 import data.Weather;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +28,8 @@ public final class WeatherData {
      * @throws IOException if an I/O error occurs opening the file.
      */
     public static List<City> readLocations(Path csvFilePath) throws IOException {
-        try (BufferedReader reader = Files.newBufferedReader(csvFilePath)) {
-            MappingIterator<City> it = new CsvMapper().readerWithSchemaFor(City.class)
+        try (Reader reader = Files.newBufferedReader(csvFilePath)) {
+            Iterator<City> it = new CsvMapper().readerWithSchemaFor(City.class)
                     .readValues(reader);
             List<City> result = new ArrayList<>();
             while(it.hasNext()) {
@@ -45,8 +47,8 @@ public final class WeatherData {
      * @throws IOException IOException if an I/O error occurs opening the file.
      */
     public static void write(Map<City, Weather> weatherMap, Path csvFilePath) throws IOException {
-        try (BufferedWriter writer = Files.newBufferedWriter(csvFilePath)) {
-            CsvSchema schema = CsvSchema.builder()
+        try (Writer writer = Files.newBufferedWriter(csvFilePath)) {
+            FormatSchema schema = CsvSchema.builder()
                     .addColumn("name")
                     .addColumn("area")
                     .addColumn("temperatureC")
@@ -56,7 +58,7 @@ public final class WeatherData {
                     .setUseHeader(true)
                     .build();
 
-            CsvMapper mapper = new CsvMapper();
+            ObjectMapper mapper = new CsvMapper();
             mapper.writer(schema).writeValue(writer, WeatherEntity.createCollection(weatherMap));
         }
     }
