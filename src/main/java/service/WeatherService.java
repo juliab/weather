@@ -13,12 +13,12 @@ import java.util.Date;
 final public class WeatherService {
 
     /**
-     * Makes a call to worldweatheronline rest service, extracts weather information from incoming json response
+     * Makes a call to worldweatheronline rest service, extracts weather information from incoming json response.
      *
-     * @param   city City name to request weather information for
-     * @param   date Date to request weather information for
-     * @return  Weather instance
-     * @throws  CityNotFoundException If no city found by search query
+     * @param   city City name to request weather information for.
+     * @param   date Date to request weather information for.
+     * @return  Weather instance.
+     * @throws  CityNotFoundException If no city found by search query.
      */
     public Weather requestWeather(City city, Date date) throws CityNotFoundException {
         RestTemplate restTemplate = new RestTemplate();

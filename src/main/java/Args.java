@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.text.*;
 import java.util.Date;
 
-public class Args {
+public final class Args {
 
     /**
      * The short and long name of argument that contains input csv file path.

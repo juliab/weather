@@ -1,6 +1,6 @@
 package service;
 
-public class CityNotFoundException extends Exception {
+public final class CityNotFoundException extends Exception {
     public CityNotFoundException(String cityName) {
         super(cityName + " city not found by weather service");
     }

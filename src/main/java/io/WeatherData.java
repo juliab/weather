@@ -16,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-final public class WeatherData {
+public final class WeatherData {
 
     /**
-     * Reads locations from csv file into list of City instances.
+     * Reads locations from csv file into the list of City instances.
      *
      * @param csvFilePath Csv file path.
      * @return List of City objects.
@@ -38,7 +38,7 @@ final public class WeatherData {
     }
 
     /**
-     * Writes collection of City and Weather objects into csv file.
+     * Writes a collection of City and Weather objects into csv file.
      *
      * @param weatherMap Collection of City and Weather objects.
      * @param csvFilePath Output csv file path.

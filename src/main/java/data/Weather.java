@@ -1,11 +1,10 @@
 package data;
 
-final public class Weather {
-
-    final private String temperatureC; // Average day temperature in C
-    final private String humidity; // Average day humidity, %
-    final private String windSpeed; // Average day windSpeed kph
-    final private String pressure; // Average day pressure in mBar
+public final class Weather {
+    private final String temperatureC; // Average day temperature in C
+    private final String humidity; // Average day humidity, %
+    private final String windSpeed; // Average day windSpeed kph
+    private final String pressure; // Average day pressure in mBar
 
     public Weather(String temperatureC, String humidity, String windSpeed,
                    String pressure) {
