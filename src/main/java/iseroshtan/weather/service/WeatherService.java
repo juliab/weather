@@ -1,9 +1,9 @@
-package service;
+package iseroshtan.weather.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import data.City;
-import data.Weather;
+import iseroshtan.weather.data.City;
+import iseroshtan.weather.data.Weather;
 
 import org.springframework.web.client.RestTemplate;
 

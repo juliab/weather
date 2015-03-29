@@ -1,4 +1,4 @@
-package service;
+package iseroshtan.weather.service;
 
 public final class CityNotFoundException extends Exception {
     public CityNotFoundException(String cityName) {

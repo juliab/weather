@@ -1,4 +1,4 @@
-package data;
+package iseroshtan.weather.data;
 
 public final class Weather {
     private final String temperatureC; // Average day temperature in C

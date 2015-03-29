@@ -1,3 +1,5 @@
+package iseroshtan.weather;
+
 import org.apache.commons.cli.*;
 import org.apache.commons.cli.ParseException;
 
