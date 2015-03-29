@@ -14,6 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Application that creates csv file with weather information for cities provided by user.
+ */
 public class App {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
