@@ -29,4 +29,26 @@ public final class Weather {
     public String getPressure() {
         return pressure;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
+        Weather weather = (Weather) object;
+        return temperatureC.equals(weather.temperatureC) && humidity.equals(weather.humidity)
+                && windSpeed.equals(weather.windSpeed) && pressure.equals(weather.pressure);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = temperatureC != null ? temperatureC.hashCode() : 0;
+        result = 31 * result + (humidity != null ? humidity.hashCode() : 0);
+        result = 31 * result + (windSpeed != null ? windSpeed.hashCode() : 0);
+        result = 31 * result + (pressure != null ? pressure.hashCode() : 0);
+        return result;
+    }
 }
