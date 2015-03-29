@@ -3,6 +3,8 @@ package iseroshtan.weather;
 import org.apache.commons.cli.*;
 import org.apache.commons.cli.ParseException;
 
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.*;
@@ -77,15 +79,25 @@ public final class Args {
      *
      * @param args command-line arguments.
      * @return parsed arguments.
-     * @throws ParseException if command-line arguments cannot be parsed.
+     * @throws org.apache.commons.cli.ParseException if command-line arguments cannot be parsed.
      * @throws java.text.ParseException if provided date cannot be parsed.
+     * @throws java.io.IOException if input file doesn't exist by given path
+     *          or output file cannot be created by given path
      */
-    public static Args parseArgs(String[] args) throws ParseException, java.text.ParseException {
+    public static Args parseArgs(String[] args) throws ParseException, java.text.ParseException, IOException {
         CommandLineParser parser = new BasicParser();
         CommandLine cmd = parser.parse(getOptions(), args);
 
         Path inputFilePath = getFilePath(cmd.getOptionValue(INPUT_FILE_NAME));
+        if (!inputFilePath.toFile().exists()) {
+            throw new NoSuchFileException(inputFilePath.toString());
+        }
+
         Path outputFilePath = getFilePath(cmd.getOptionValue(OUTPUT_FILE_NAME));
+        if (!outputFilePath.toFile().exists() && !outputFilePath.toFile().createNewFile()) {
+            throw new NoSuchFileException(outputFilePath.toString());
+        }
+
         Date date = parseDate(cmd.getOptionValue(DATE_NAME));
 
         return new Args(inputFilePath, outputFilePath, date);

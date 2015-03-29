@@ -45,6 +45,9 @@ public class App {
         } catch (ParseException | java.text.ParseException exception) {
             printHelp();
             System.exit(-1);
+        } catch (IOException exception) {
+            LOGGER.error("Check if input/output file path is valid");
+            System.exit(-1);
         }
     }
 }
