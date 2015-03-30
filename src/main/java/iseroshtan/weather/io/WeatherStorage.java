@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public final class WeatherData {
+public final class WeatherStorage {
 
     /**
      * Reads locations from csv file into the list of City instances.
@@ -46,7 +46,7 @@ public final class WeatherData {
      * @param csvFilePath Output csv file path.
      * @throws IOException If an I/O error occurs opening the file.
      */
-    public static void write(Map<City, Weather> weatherMap, Path csvFilePath) throws IOException {
+    public static void writeWeather(Map<City, Weather> weatherMap, Path csvFilePath) throws IOException {
         try (Writer writer = Files.newBufferedWriter(csvFilePath)) {
             FormatSchema schema = CsvSchema.builder()
                     .addColumn("name")

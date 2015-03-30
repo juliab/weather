@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 import static iseroshtan.weather.Args.*;
-import static iseroshtan.weather.io.WeatherData.*;
+import static iseroshtan.weather.io.WeatherStorage.*;
 
 /**
  * Application that creates csv file with weather information for cities provided by user.
@@ -44,7 +44,7 @@ public class App {
                     LOGGER.error("No response from weather service");
                 }
             }
-            write(weatherMap, parsedArgs.getOutputFilePath());
+            writeWeather(weatherMap, parsedArgs.getOutputFilePath());
             LOGGER.info("CSV file {} was created successfully", parsedArgs.getOutputFilePath());
         } catch (ParseException | java.text.ParseException exception) {
             printHelp();

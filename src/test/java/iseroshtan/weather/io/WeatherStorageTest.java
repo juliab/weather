@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static iseroshtan.weather.io.WeatherData.*;
+import static iseroshtan.weather.io.WeatherStorage.*;
 
 /**
  * Unit tests for class that works with input/output of weather information
  */
-public class WeatherDataTest {
+public class WeatherStorageTest {
 
     private final String resourcesFolderPath = "src" + File.separator + "test" + File.separator + "resources";
     private final String inputFilePath = resourcesFolderPath + File.separator + "input.csv";
@@ -32,10 +32,10 @@ public class WeatherDataTest {
     }
 
     @Test
-    public void writeTest() throws IOException {
+    public void writeWeatherTest() throws IOException {
         Map<City, Weather> map = new HashMap<>();
         map.put(new City("Donetsk", "Donetsk"), new Weather("-9", "87", "10", "1029"));
-        write(map, Paths.get(outputFilePath));
+        writeWeather(map, Paths.get(outputFilePath));
         List<String> fileContent = Files.readAllLines(Paths.get(outputFilePath));
         assertEquals("name,area,temperatureC,humidity,windSpeed,pressure", fileContent.get(0));
         assertEquals("Donetsk,Donetsk,-9,87,10,1029", fileContent.get(1));
