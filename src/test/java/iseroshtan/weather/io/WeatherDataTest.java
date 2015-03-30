@@ -15,12 +15,14 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static iseroshtan.weather.io.WeatherData.*;
 
+/**
+ * Unit tests for class that works with input/output of weather information
+ */
 public class WeatherDataTest {
 
     private final String resourcesFolderPath = "src" + File.separator + "test" + File.separator + "resources";
     private final String inputFilePath = resourcesFolderPath + File.separator + "input.csv";
     private final String outputFilePath = resourcesFolderPath + File.separator + "output.csv";
-
 
     @Test
     public void readLocationsTest() throws IOException {

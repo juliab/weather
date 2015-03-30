@@ -25,7 +25,7 @@ public final class WeatherData {
      *
      * @param csvFilePath Csv file path.
      * @return List of City objects.
-     * @throws IOException if an I/O error occurs opening the file.
+     * @throws IOException If an I/O error occurs opening the file.
      */
     public static List<City> readLocations(Path csvFilePath) throws IOException {
         try (Reader reader = Files.newBufferedReader(csvFilePath)) {
@@ -44,7 +44,7 @@ public final class WeatherData {
      *
      * @param weatherMap Collection of City and Weather objects.
      * @param csvFilePath Output csv file path.
-     * @throws IOException IOException if an I/O error occurs opening the file.
+     * @throws IOException If an I/O error occurs opening the file.
      */
     public static void write(Map<City, Weather> weatherMap, Path csvFilePath) throws IOException {
         try (Writer writer = Files.newBufferedWriter(csvFilePath)) {

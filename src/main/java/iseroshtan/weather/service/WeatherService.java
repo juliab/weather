@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import iseroshtan.weather.data.City;
 import iseroshtan.weather.data.Weather;
 
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.Format;
@@ -20,8 +21,9 @@ final public class WeatherService {
      * @param   date Date to request weather information for.
      * @return  Weather instance.
      * @throws  CityNotFoundException If no city found by search query.
+     * @throws HttpClientErrorException If 404 error returned by rest service.
      */
-    public Weather requestWeather(City city, Date date) throws CityNotFoundException {
+    public Weather requestWeather(City city, Date date) throws CityNotFoundException, HttpClientErrorException {
         RestTemplate restTemplate = new RestTemplate();
         String serviceUrl = "http://api.worldweatheronline.com/free/v2/past-weather.ashx?" +
                 "key={key}&q={city},ua&format=json&date={date}";
