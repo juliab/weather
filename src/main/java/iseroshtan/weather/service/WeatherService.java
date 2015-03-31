@@ -34,8 +34,13 @@ final public class WeatherService {
 
         ObjectNode objectNode = restTemplate.getForObject(serviceUrl, ObjectNode.class,
                 key, city.getName(), dateFormat.format(date));
+
+        return getWeatherFromJson(objectNode, city.getName());
+    }
+
+    private Weather getWeatherFromJson(ObjectNode objectNode, String cityName) throws CityNotFoundException {
         if (objectNode.findValue("error") != null) {
-            throw new CityNotFoundException(city.getName());
+            throw new CityNotFoundException(cityName);
         }
 
         JsonNode temperatureCJson = objectNode.findValue("tempC");
