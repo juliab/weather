@@ -1,13 +1,16 @@
 package iseroshtan.weather;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import iseroshtan.weather.data.City;
 import iseroshtan.weather.data.Weather;
-import iseroshtan.weather.service.CityNotFoundException;
-import iseroshtan.weather.service.WeatherService;
+import iseroshtan.weather.service.exception.CityNotFoundException;
+import iseroshtan.weather.service.WeatherServiceDiModule;
+import iseroshtan.weather.service.WeatherGetter;
+import iseroshtan.weather.service.exception.UnavailableServiceException;
 import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.io.IOException;
 import java.nio.file.InvalidPathException;
@@ -34,13 +37,13 @@ public class App {
             LOGGER.info("Acquiring weather data on {}. This may take a while...", date);
             List<City> cities = readLocations(parsedArgs.getInputFilePath());
             Map<City, Weather> weatherMap = new HashMap<>();
-            WeatherService service = new WeatherService();
+            WeatherGetter weatherGetter = createWeatherGetter();
             for (City city : cities) {
                 try {
-                    weatherMap.put(city, service.requestWeather(city, date));
+                    weatherMap.put(city, weatherGetter.getWeather(city, date));
                 } catch (CityNotFoundException exception) {
                     LOGGER.warn(exception.getMessage());
-                } catch (HttpClientErrorException exception) {
+                } catch (UnavailableServiceException exception) {
                     LOGGER.error("No response from weather service");
                 }
             }
@@ -53,5 +56,14 @@ public class App {
             LOGGER.error("Check if input/output file path is valid");
             System.exit(-1);
         }
+    }
+
+    /**
+     * Get WeatherGetter instance using Dependency Injection
+     * @return WeatherGetter instance
+     */
+    private static WeatherGetter createWeatherGetter() {
+        Injector injector = Guice.createInjector(new WeatherServiceDiModule());
+        return injector.getInstance(WeatherGetter.class);
     }
 }
