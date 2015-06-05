@@ -70,7 +70,7 @@ public final class WeatherStorage {
     }
 
     /**
-     * The purpose of this class is to combine City and Weather in one entity valid for Jackson mapper
+     * The purpose of this class is to combine City and Weather in one entity valid for Jackson mapper.
      */
     private static final class WeatherEntity {
         @JsonUnwrapped
