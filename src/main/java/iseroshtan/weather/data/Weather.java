@@ -1,5 +1,11 @@
 package iseroshtan.weather.data;
 
+/**
+ * This immutable class represents weather.
+ *
+ * @author Julia Seroshtan
+ */
+
 public final class Weather {
     private final String temperatureC; // Average day temperature in C
     private final String humidity; // Average day humidity, %

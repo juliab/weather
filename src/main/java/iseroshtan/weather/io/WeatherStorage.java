@@ -18,14 +18,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class performs csv files input/output.
+ *
+ * @author Julia Seroshtan
+ */
+
 public final class WeatherStorage {
 
     /**
      * Reads locations from csv file into the list of City instances.
      *
-     * @param csvFilePath Csv file path.
-     * @return List of City objects.
-     * @throws IOException If an I/O error occurs opening the file.
+     * @param csvFilePath csv file path
+     * @return list of City objects
+     * @throws IOException if an I/O error occurs opening the file
      */
     public static List<City> readLocations(Path csvFilePath) throws IOException {
         try (Reader reader = Files.newBufferedReader(csvFilePath)) {
@@ -42,9 +48,9 @@ public final class WeatherStorage {
     /**
      * Writes a collection of City and Weather objects into csv file.
      *
-     * @param weatherMap Collection of City and Weather objects.
-     * @param csvFilePath Output csv file path.
-     * @throws IOException If an I/O error occurs opening the file.
+     * @param weatherMap collection of City and Weather objects
+     * @param csvFilePath output csv file path
+     * @throws IOException if an I/O error occurs opening the file
      */
     public static void writeWeather(Map<City, Weather> weatherMap, Path csvFilePath) throws IOException {
         try (Writer writer = Files.newBufferedWriter(csvFilePath)) {
@@ -63,6 +69,9 @@ public final class WeatherStorage {
         }
     }
 
+    /**
+     * The purpose of this class is to combine City and Weather in one entity valid for Jackson mapper
+     */
     private static final class WeatherEntity {
         @JsonUnwrapped
         private final City city;

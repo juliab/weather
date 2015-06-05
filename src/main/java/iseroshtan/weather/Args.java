@@ -11,6 +11,13 @@ import java.nio.file.Paths;
 import java.text.*;
 import java.util.Date;
 
+/**
+ * This class is used to parse command-line arguments entered by user.
+ * Arguments include: input csv file path, output csv file path, date.
+ *
+ * @author Julia Seroshtan
+ */
+
 public final class Args {
 
     /**
@@ -38,9 +45,9 @@ public final class Args {
     /**
      * Create arguments.
      *
-     * @param inputFilePath Input csv file (cities list) path.
-     * @param outputFilePath Output csv file (weather information for each city) path.
-     * @param date Date for weather information to be gathered on.
+     * @param inputFilePath input csv file (cities list) path
+     * @param outputFilePath output csv file (weather information for each city) path
+     * @param date date for weather information to be gathered on
      */
     public Args(Path inputFilePath, Path outputFilePath, Date date) {
         this.inputFilePath = inputFilePath;
@@ -51,7 +58,7 @@ public final class Args {
     /**
      * Returns input csv file path.
      *
-     * @return File path.
+     * @return file path
      */
     public Path getInputFilePath() {
         return inputFilePath;
@@ -60,7 +67,7 @@ public final class Args {
     /**
      * Returns output csv file path.
      *
-     * @return File path.
+     * @return file path
      */
     public Path getOutputFilePath() {
         return outputFilePath;
@@ -69,7 +76,7 @@ public final class Args {
     /**
      * Returns date for weather information to be gathered on.
      *
-     * @return Date.
+     * @return date
      */
     public Date getDate() {
         return date;
@@ -78,13 +85,13 @@ public final class Args {
     /**
      * Parses command-line arguments.
      *
-     * @param args Command-line arguments.
-     * @return Parsed arguments.
-     * @throws org.apache.commons.cli.ParseException If command-line arguments cannot be parsed.
-     * @throws java.text.ParseException If provided date cannot be parsed.
-     * @throws IOException If input file doesn't exist by given path
-     *          or output file cannot be created by given path.
-     * @throws InvalidPathException If given file path is invalid.
+     * @param args command-line arguments
+     * @return parsed arguments
+     * @throws org.apache.commons.cli.ParseException if command-line arguments cannot be parsed
+     * @throws java.text.ParseException if provided date cannot be parsed
+     * @throws IOException if input file doesn't exist by given path
+     *          or output file cannot be created by given path
+     * @throws InvalidPathException if given file path is invalid
      */
     public static Args parseArgs(String[] args) throws ParseException, java.text.ParseException, IOException,
             InvalidPathException {

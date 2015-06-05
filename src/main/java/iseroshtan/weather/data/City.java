@@ -4,6 +4,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+/**
+ * This immutable class represents city.
+ *
+ * @author Julia Seroshtan
+ */
+
 @JsonPropertyOrder({ "name", "area" })
 public final class City {
     private final String name;

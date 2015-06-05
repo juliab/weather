@@ -14,16 +14,22 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This is a concrete weather service implementation. It uses worldweatheronline rest service to get weather data.
+ *
+ * @author Julia Seroshtan
+ */
+
 final public class WorldWeatherOnlineRest implements WeatherService {
 
     /**
      * Makes a call to worldweatheronline rest service, extracts weather information from incoming json response.
      *
-     * @param   city City name to request weather information for.
-     * @param   date Date to request weather information for.
-     * @return  Weather instance.
-     * @throws CityNotFoundException If no city found by search query.
-     * @throws UnavailableServiceException If 404 error returned by rest service.
+     * @param   city city to request weather information for
+     * @param   date date to request weather information for
+     * @return  weather instance
+     * @throws CityNotFoundException if no city found by search query
+     * @throws UnavailableServiceException if 404 error returned by rest service
      */
     public Weather requestWeather(City city, Date date) throws CityNotFoundException, UnavailableServiceException {
         RestTemplate restTemplate = new RestTemplate();

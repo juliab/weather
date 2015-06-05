@@ -25,7 +25,10 @@ import static iseroshtan.weather.io.WeatherStorage.*;
 /**
  * Application that creates csv file with weather information for cities provided by user.
  * Input file format: city name, city area. No header.
+ *
+ * @author Julia Seroshtan
  */
+
 public class App {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
@@ -59,7 +62,7 @@ public class App {
     }
 
     /**
-     * Get WeatherGetter instance using Dependency Injection
+     * Get WeatherGetter instance using Dependency Injection technique to create dependency.
      * @return WeatherGetter instance
      */
     private static WeatherGetter createWeatherGetter() {
