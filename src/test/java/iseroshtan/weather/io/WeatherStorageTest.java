@@ -16,8 +16,11 @@ import static org.junit.Assert.assertEquals;
 import static iseroshtan.weather.io.WeatherStorage.*;
 
 /**
- * Unit tests for class that works with input/output of weather information
+ * Unit tests for class that works with input/output of weather information.
+ *
+ * @author Julia Seroshtan
  */
+
 public class WeatherStorageTest {
 
     private final String resourcesFolderPath = "src" + File.separator + "test" + File.separator + "resources";
